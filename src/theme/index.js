@@ -1,46 +1,101 @@
-import { MD3LightTheme, configureFonts } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, configureFonts } from 'react-native-paper';
 
-// Premium color palette
-const colors = {
-  primary: '#4F46E5', // Indigo 600
-  onPrimary: '#FFFFFF',
-  primaryContainer: '#E0E7FF',
-  secondary: '#10B981', // Emerald 500
-  onSecondary: '#FFFFFF',
-  secondaryContainer: '#D1FAE5',
-  tertiary: '#F59E0B', // Amber 500
-  background: '#F9FAFB', // Gray 50
+// Indian-influenced Palette
+const pallette = {
+  primary: '#4F46E5',    // Indigo (Deep Blue) - Trust
+  secondary: '#FF9933',  // Saffron (Orange) - Energy
+  tertiary: '#138808',   // India Green - Growth
+  background: '#F9FAFB', // Off-white/Gray
   surface: '#FFFFFF',
-  surfaceVariant: '#F3F4F6',
-  text: '#1F2937', // Gray 800
-  outline: '#E5E7EB',
-  error: '#EF4444',
-  elevation: {
-    level0: 'transparent',
-    level1: '#FFFFFF',
-    level2: '#F9FAFB',
-    level3: '#F3F4F6',
-    level4: '#E5E7EB',
-    level5: '#D1D5DB',
-  },
+  error: '#DC2626',
 };
 
 const fontConfig = {
-  displayLarge: {
-    fontFamily: 'System',
-    fontSize: 57,
-    fontWeight: '400',
-    letterSpacing: 0,
-    lineHeight: 64,
+  fontFamily: 'Inter_400Regular',
+  displaySmall: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 36,
+    lineHeight: 44,
   },
-  // ... can customize further
+  displayMedium: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 45,
+    lineHeight: 52,
+  },
+  headlineMedium: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 28,
+    lineHeight: 36,
+  },
+  headlineSmall: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 24,
+    lineHeight: 32,
+  },
+  titleLarge: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 22,
+    lineHeight: 28,
+  },
+  titleMedium: {
+    fontFamily: 'Inter_500Medium',
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0.15,
+  },
+  bodyLarge: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0.5,
+  },
+  bodyMedium: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 14,
+    lineHeight: 20,
+    letterSpacing: 0.25,
+  },
+  labelLarge: {
+    fontFamily: 'Inter_500Medium',
+    fontSize: 14,
+    lineHeight: 20,
+    letterSpacing: 0.1,
+  },
 };
 
 export const theme = {
-  ...MD3LightTheme,
+  ...DefaultTheme,
+  roundness: 16, // Softer corners
   colors: {
-    ...MD3LightTheme.colors,
-    ...colors,
+    ...DefaultTheme.colors,
+    primary: pallette.primary,
+    onPrimary: '#FFFFFF',
+    primaryContainer: '#E0E7FF',
+    onPrimaryContainer: '#3730A3',
+
+    secondary: pallette.secondary,
+    onSecondary: '#FFFFFF',
+    secondaryContainer: '#FFEDD5', // Light Orange
+    onSecondaryContainer: '#9A3412',
+
+    tertiary: pallette.tertiary,
+    onTertiary: '#FFFFFF',
+    tertiaryContainer: '#DCFCE7', // Light Green
+    onTertiaryContainer: '#14532D',
+
+    background: pallette.background,
+    surface: pallette.surface,
+    surfaceVariant: '#F3F4F6',
+    onSurface: '#1F2937',
+
+    elevation: {
+      level0: 'transparent',
+      level1: '#F3F4F6',
+      level2: '#FFFFFF',
+      level3: '#FFFFFF',
+      level4: '#FFFFFF',
+      level5: '#FFFFFF',
+    },
   },
-  roundness: 12, // More rounded corners for modern feel
+  fonts: configureFonts({ config: fontConfig }),
 };

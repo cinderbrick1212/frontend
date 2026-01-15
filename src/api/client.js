@@ -10,6 +10,7 @@ const API_URL = 'https://edu-backend-x2vn.onrender.com/api';
 
 const client = axios.create({
     baseURL: API_URL,
+    timeout: 10000, // 10 seconds timeout
     headers: {
         'Content-Type': 'application/json',
     },
