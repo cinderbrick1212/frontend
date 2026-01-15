@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'reac
 import { Text, Surface, Button, useTheme, ProgressBar, IconButton, Modal, Portal } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from '../../components/LinearGradientShim';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 

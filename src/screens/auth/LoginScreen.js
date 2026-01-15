@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
-import { Text, TextInput, Button, useTheme, Surface } from 'react-native-paper';
-import { AuthContext } from '../../context/AuthContext';
+import { View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { Surface, TextInput, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import LinearGradient from '../../components/LinearGradientShim';
 
-const { width } = Dimensions.get('window');
+import { AuthContext } from '../../context/AuthContext';
+import LinearGradient from '../../components/LinearGradientShim';
+import { CText, CButton, CInput } from '../../components/atoms';
+import { gradients } from '../../theme';
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ export default function LoginScreen({ navigation }) {
             <View style={{ flex: 1 }}>
                 {/* Background Gradient */}
                 <LinearGradient
-                    colors={[theme.colors.primary, theme.colors.secondaryContainer]}
+                    colors={gradients.focus}
                     style={StyleSheet.absoluteFill}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
@@ -45,76 +46,65 @@ export default function LoginScreen({ navigation }) {
                     <View style={styles.content}>
                         <View style={styles.headerContainer}>
                             <View style={styles.iconContainer}>
-                                <Text style={{ fontSize: 40 }}>🎓</Text>
+                                <CText style={{ fontSize: 40 }}>🎓</CText>
                             </View>
-                            <Text variant="displaySmall" style={[styles.title, { color: 'white' }]}>
+                            <CText variant="displaySmall" style={[styles.title, { color: 'white' }]}>
                                 CollegeBase
-                            </Text>
-                            <Text variant="bodyLarge" style={[styles.subtitle, { color: 'rgba(255,255,255,0.9)' }]}>
+                            </CText>
+                            <CText variant="bodyLarge" style={[styles.subtitle, { color: 'rgba(255,255,255,0.9)' }]}>
                                 Your Campus Companion
-                            </Text>
+                            </CText>
                         </View>
 
                         <Surface style={styles.formCard} elevation={5}>
-                            <Text variant="headlineSmall" style={[styles.formTitle, { color: theme.colors.primary }]}>
+                            <CText variant="headlineSmall" style={[styles.formTitle, { color: theme.colors.primary }]}>
                                 Welcome Back
-                            </Text>
+                            </CText>
 
                             {error ? (
                                 <View style={[styles.errorContainer, { backgroundColor: theme.colors.errorContainer }]}>
-                                    <Text style={{ color: theme.colors.error, textAlign: 'center' }}>
+                                    <CText style={{ color: theme.colors.error, textAlign: 'center' }}>
                                         {error}
-                                    </Text>
+                                    </CText>
                                 </View>
                             ) : null}
 
-                            <TextInput
+                            <CInput
                                 label="Email"
                                 value={email}
                                 onChangeText={(text) => { setEmail(text); setError(''); }}
-                                mode="outlined"
-                                style={styles.input}
                                 autoCapitalize="none"
                                 keyboardType="email-address"
                                 disabled={isLoading}
                                 left={<TextInput.Icon icon="email" color={theme.colors.primary} />}
-                                outlineColor="transparent"
-                                activeOutlineColor={theme.colors.primary}
-                                theme={{ roundness: 12 }}
                             />
-                            <TextInput
+
+                            <CInput
                                 label="Password"
                                 value={password}
                                 onChangeText={(text) => { setPassword(text); setError(''); }}
-                                mode="outlined"
                                 secureTextEntry
-                                style={styles.input}
                                 disabled={isLoading}
                                 left={<TextInput.Icon icon="lock" color={theme.colors.primary} />}
-                                outlineColor="transparent"
-                                activeOutlineColor={theme.colors.primary}
-                                theme={{ roundness: 12 }}
                             />
 
-                            <Button
-                                mode="contained"
+                            <CButton
+                                mode="gradient"
+                                gradientType="joy"
+                                label={isLoading ? 'Signing in...' : 'Sign In'}
                                 onPress={handleLogin}
-                                style={styles.button}
-                                contentStyle={{ height: 56 }}
-                                labelStyle={{ fontSize: 18, fontWeight: 'bold' }}
                                 loading={isLoading}
                                 disabled={isLoading}
-                            >
-                                {isLoading ? 'Signing in...' : 'Login'}
-                            </Button>
+                                style={styles.button}
+                            />
                         </Surface>
 
                         <View style={styles.footer}>
-                            <Text variant="bodyMedium" style={{ color: 'white' }}>Don't have an account? </Text>
+                            <CText variant="bodyMedium" style={{ color: 'white' }}>Don't have an account? </CText>
                             <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                                <Text style={{ color: 'white', fontWeight: 'bold', textDecorationLine: 'underline' }}>
+                                <CText style={{ color: 'white', fontWeight: 'bold', textDecorationLine: 'underline' }}>
                                     Sign Up
-                                </Text>
+                                </CText>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -184,14 +174,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 16,
     },
-    input: {
-        marginBottom: 16,
-        backgroundColor: '#F3F4F6',
-    },
     button: {
         marginTop: 16,
-        borderRadius: 16,
-        elevation: 4,
     },
     footer: {
         flexDirection: 'row',

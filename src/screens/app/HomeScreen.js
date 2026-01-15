@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, FlatList, Image } from 'react-native';
-import { Text, Surface, Button, useTheme, Avatar, Card, IconButton, FAB, Chip, Badge } from 'react-native-paper';
-import { AuthContext } from '../../context/AuthContext';
+import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { Surface, useTheme, Avatar, IconButton, FAB, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+
+import { AuthContext } from '../../context/AuthContext';
 import LinearGradient from '../../components/LinearGradientShim';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { CText } from '../../components/atoms/CText';
+import { ActionCard } from '../../components/molecules/ActionCard';
+import { gradients } from '../../theme';
 
 const { width } = Dimensions.get('window');
 
@@ -25,8 +29,8 @@ export default function HomeScreen({ navigation }) {
                 <Icon name={item.icon} size={24} color={item.color} />
             </View>
             <View style={{ flex: 1, marginLeft: 16 }}>
-                <Text variant="titleMedium" style={{ fontWeight: '600' }}>{item.title}</Text>
-                <Text variant="bodySmall" style={{ color: theme.colors.outline }}>{item.time}</Text>
+                <CText variant="titleMedium" style={{ fontWeight: '600' }}>{item.title}</CText>
+                <CText variant="bodySmall" style={{ color: theme.colors.outline }}>{item.time}</CText>
             </View>
             <Icon name="chevron-right" size={24} color={theme.colors.outline} />
         </Surface>
@@ -36,7 +40,7 @@ export default function HomeScreen({ navigation }) {
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             {/* Extended Gradient Header */}
             <LinearGradient
-                colors={['#4F46E5', '#7C3AED']} // Indigo to Violet
+                colors={gradients.focus} // Utilising V2 Theme Gradient
                 style={styles.headerGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -51,10 +55,10 @@ export default function HomeScreen({ navigation }) {
                                 color="white"
                             />
                             <View>
-                                <Text variant="bodyMedium" style={{ color: 'rgba(255,255,255,0.9)' }}>Namaste,</Text>
-                                <Text variant="headlineSmall" style={{ color: 'white', fontWeight: 'bold' }}>
+                                <CText variant="bodyMedium" style={{ color: 'rgba(255,255,255,0.9)' }}>Namaste,</CText>
+                                <CText variant="headlineSmall" style={{ color: 'white', fontWeight: 'bold' }}>
                                     {userInfo?.profile?.name?.split(' ')[0] || 'Student'}
-                                </Text>
+                                </CText>
                             </View>
                         </View>
                         <IconButton
@@ -69,18 +73,18 @@ export default function HomeScreen({ navigation }) {
                     {/* Quick Stats in Header */}
                     <View style={styles.headerStats}>
                         <View style={styles.headerStatItem}>
-                            <Text variant="displayMedium" style={{ color: 'white', fontWeight: 'bold' }}>85%</Text>
-                            <Text variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Attendance</Text>
+                            <CText variant="displayMedium" style={{ color: 'white', fontWeight: 'bold' }}>85%</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Attendance</CText>
                         </View>
                         <View style={styles.headerStatDivider} />
                         <View style={styles.headerStatItem}>
-                            <Text variant="displayMedium" style={{ color: '#FFD700', fontWeight: 'bold' }}>3.8</Text>
-                            <Text variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>CGPA</Text>
+                            <CText variant="displayMedium" style={{ color: '#FFD700', fontWeight: 'bold' }}>3.8</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>CGPA</CText>
                         </View>
                         <View style={styles.headerStatDivider} />
                         <View style={styles.headerStatItem}>
-                            <Text variant="displayMedium" style={{ color: '#6EE7B7', fontWeight: 'bold' }}>12</Text>
-                            <Text variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending</Text>
+                            <CText variant="displayMedium" style={{ color: '#6EE7B7', fontWeight: 'bold' }}>12</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending</CText>
                         </View>
                     </View>
                 </SafeAreaView>
@@ -92,7 +96,7 @@ export default function HomeScreen({ navigation }) {
                 <TouchableOpacity onPress={() => navigation.navigate('Quizzes')} activeOpacity={0.9}>
                     <Surface style={styles.promoCard} elevation={4}>
                         <LinearGradient
-                            colors={['#F59E0B', '#F97316']} // Amber to Orange
+                            colors={gradients.joy} // Utilising V2 Theme Gradient
                             style={StyleSheet.absoluteFill}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
@@ -100,10 +104,10 @@ export default function HomeScreen({ navigation }) {
                         <View style={{ flex: 1, zIndex: 1 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                                 <Icon name="brain" size={20} color="white" style={{ marginRight: 8 }} />
-                                <Text variant="labelLarge" style={{ color: 'white', fontWeight: 'bold', opacity: 0.9 }}>AI STUDY COMPANION</Text>
+                                <CText variant="labelLarge" style={{ color: 'white', fontWeight: 'bold', opacity: 0.9 }}>AI STUDY COMPANION</CText>
                             </View>
-                            <Text variant="headlineSmall" style={{ color: 'white', fontWeight: 'bold', marginBottom: 4 }}>Take a Mock Test</Text>
-                            <Text variant="bodyMedium" style={{ color: 'rgba(255,255,255,0.9)', marginBottom: 12 }}>Test your knowledge with AI-generated questions.</Text>
+                            <CText variant="headlineSmall" style={{ color: 'white', fontWeight: 'bold', marginBottom: 4 }}>Take a Mock Test</CText>
+                            <CText variant="bodyMedium" style={{ color: 'rgba(255,255,255,0.9)', marginBottom: 12 }}>Test your knowledge with AI-generated questions.</CText>
                             <Chip
                                 icon="arrow-right"
                                 style={{ backgroundColor: 'white', alignSelf: 'flex-start' }}
@@ -121,7 +125,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableOpacity>
 
                 {/* Quick Actions Grid */}
-                <Text variant="titleLarge" style={styles.sectionTitle}>Quick Access</Text>
+                <CText variant="titleLarge" style={styles.sectionTitle}>Quick Access</CText>
                 <View style={styles.actionsGrid}>
                     <ActionCard title="Resources" icon="book-open-variant" color="#3B82F6" onPress={() => navigation.navigate('Resources')} />
                     <ActionCard title="Community" icon="account-group" color="#EC4899" onPress={() => navigation.navigate('Forums')} />
@@ -131,10 +135,11 @@ export default function HomeScreen({ navigation }) {
 
                 {/* Dynamic Feed */}
                 <View style={styles.feedHeader}>
-                    <Text variant="titleLarge" style={styles.sectionTitle}>Your Feed</Text>
-                    <TouchableOpacity><Text style={{ color: theme.colors.primary, fontWeight: '600' }}>See All</Text></TouchableOpacity>
+                    <CText variant="titleLarge" style={styles.sectionTitle}>Your Feed</CText>
+                    <TouchableOpacity><CText style={{ color: theme.colors.primary, fontWeight: '600' }}>See All</CText></TouchableOpacity>
                 </View>
 
+                {/* Implemented Feed Items */}
                 {FEED_ITEMS.map((item) => (
                     <TouchableOpacity key={item.id} activeOpacity={0.7} onPress={() => { }}>
                         {renderFeedItem({ item })}
@@ -156,17 +161,6 @@ export default function HomeScreen({ navigation }) {
         </View>
     );
 }
-
-const ActionCard = ({ title, icon, color, onPress }) => (
-    <TouchableOpacity style={styles.actionCardContainer} onPress={onPress}>
-        <Surface style={styles.actionCard} elevation={1}>
-            <View style={[styles.iconBox, { backgroundColor: color + '15' }]}>
-                <Icon name={icon} size={28} color={color} />
-            </View>
-            <Text variant="labelLarge" style={{ fontWeight: '600', marginTop: 12 }}>{title}</Text>
-        </Surface>
-    </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
     container: {
@@ -233,24 +227,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         marginBottom: 24,
-    },
-    actionCardContainer: {
-        width: '23%',
-    },
-    actionCard: {
-        padding: 12,
-        borderRadius: 16,
-        alignItems: 'center',
-        backgroundColor: 'white',
-        minHeight: 100,
-        justifyContent: 'center',
-    },
-    iconBox: {
-        width: 48,
-        height: 48,
-        borderRadius: 14,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     feedHeader: {
         flexDirection: 'row',

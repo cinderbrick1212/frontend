@@ -1,21 +1,27 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl, Dimensions } from 'react-native';
-import { Text, Surface, Button, useTheme, Avatar, ProgressBar, SegmentedButtons } from 'react-native-paper';
-import { AuthContext } from '../../context/AuthContext';
-import client from '../../api/client';
+import { Surface, Button, useTheme, ProgressBar, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LineChart, ProgressChart } from 'react-native-chart-kit';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+
+import { AuthContext } from '../../context/AuthContext';
+import client from '../../api/client';
+import LinearGradient from '../../components/LinearGradientShim';
+import { CText, StatCard } from '../../components/atoms'; // Import StatCard? No, it's in molecules.
+import { StatCard as StatCardMolecule } from '../../components/molecules';
+import { gradients } from '../../theme';
 
 const { width } = Dimensions.get('window');
 
-export default function StatsScreen() {
+export default function StatsScreen({ navigation }) {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
+    // Unused for now but kept for logic
     const { userToken } = useContext(AuthContext);
     const theme = useTheme();
-    const [period, setPeriod] = useState('sem');
 
     const fetchStats = async () => {
         try {
@@ -34,36 +40,34 @@ export default function StatsScreen() {
         fetchStats();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchStats();
     }, []);
 
-    // Mock Data for Charts (Use real data if available from stats object)
+    // Mock Data for Charts
     const gradeTrendData = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [{
             data: [65, 78, 72, 85, 82, 90],
-            color: (opacity = 1) => `rgba(79, 70, 229, ${opacity})`, // Indigo
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // White line on gradient
             strokeWidth: 3
         }]
     };
 
     const attendanceData = {
-        labels: ["Math", "Phy", "Chem"], // abbreviated
+        labels: ["Math", "Phy", "Chem"],
         data: [0.9, 0.75, 0.8]
     };
 
     const chartConfig = {
         backgroundGradientFrom: "#ffffff",
         backgroundGradientTo: "#ffffff",
-        color: (opacity = 1) => `rgba(79, 70, 229, ${opacity})`,
+        color: (opacity = 1) => theme.colors.primary,
         strokeWidth: 2,
         decimalPlaces: 0,
         labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-        propsForDots: { r: "5", strokeWidth: "2", stroke: "#4F46E5" }
     };
 
-    // Fallback data
     const displayStats = stats || {
         attendance: 85,
         avgMarks: 82,
@@ -76,84 +80,96 @@ export default function StatsScreen() {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            <View style={styles.header}>
-                <Text variant="headlineMedium" style={{ fontWeight: 'bold', color: theme.colors.primary }}>Performance</Text>
-                <Icon name="poll" size={28} color={theme.colors.primary} />
-            </View>
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            {/* Header */}
+            <LinearGradient
+                colors={gradients.focus}
+                style={styles.headerGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+            >
+                <SafeAreaView edges={['top', 'left', 'right']}>
+                    <View style={styles.headerContent}>
+                        <IconButton
+                            icon="arrow-left"
+                            iconColor="white"
+                            size={24}
+                            onPress={() => navigation.goBack()}
+                        />
+                        <CText variant="headlineSmall" style={styles.headerTitle}>Overview</CText>
+                        <IconButton
+                            icon="share-variant"
+                            iconColor="white"
+                            size={24}
+                            onPress={() => { }}
+                        />
+                    </View>
+
+                    {/* Hero Chart inside Header */}
+                    <View style={styles.chartContainer}>
+                        <LineChart
+                            data={gradeTrendData}
+                            width={width}
+                            height={180}
+                            withDots={false}
+                            withInnerLines={false}
+                            withOuterLines={false}
+                            withVerticalLabels={false}
+                            withHorizontalLabels={false}
+                            chartConfig={{
+                                ...chartConfig,
+                                backgroundGradientFromOpacity: 0,
+                                backgroundGradientToOpacity: 0,
+                                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                labelColor: () => `rgba(255, 255, 255, 0.7)`,
+                            }}
+                            bezier
+                            style={{ paddingRight: 0, marginLeft: -20 }}
+                        />
+                        <CText variant="titleMedium" style={styles.chartOverlayText}>Cumulative Performance</CText>
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
 
             <ScrollView
                 contentContainerStyle={styles.content}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Semester Progress */}
-                <Surface style={styles.mainCard} elevation={2}>
-                    <Text variant="titleMedium" style={{ fontWeight: 'bold', marginBottom: 16 }}>Semester Progress</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <ProgressChart
-                            data={attendanceData}
-                            width={width - 80}
-                            height={160}
-                            strokeWidth={12}
-                            radius={24}
-                            chartConfig={{
-                                ...chartConfig,
-                                color: (opacity = 1, index) => {
-                                    const colors = [theme.colors.primary, theme.colors.secondary, theme.colors.tertiary];
-                                    return colors[index % colors.length];
-                                }
-                            }}
-                            hideLegend={false}
-                        />
-                    </View>
-                    <View style={styles.statBadges}>
-                        <View style={styles.badgeItem}>
-                            <Text variant="displaySmall" style={{ fontWeight: 'bold', color: theme.colors.primary }}>{displayStats.attendance}%</Text>
-                            <Text variant="bodySmall" style={{ color: '#6B7280' }}>Attendance</Text>
-                        </View>
-                        <View style={[styles.divider, { backgroundColor: '#E5E7EB' }]} />
-                        <View style={styles.badgeItem}>
-                            <Text variant="displaySmall" style={{ fontWeight: 'bold', color: theme.colors.secondary }}>{displayStats.avgMarks}</Text>
-                            <Text variant="bodySmall" style={{ color: '#6B7280' }}>Avg Marks</Text>
-                        </View>
-                    </View>
-                </Surface>
+                {/* Metric Cards */}
+                <View style={styles.statsGrid}>
+                    <StatCardMolecule
+                        label="Avg Attendance"
+                        value={`${displayStats.attendance}%`}
+                        icon="account-check"
+                        color={theme.colors.secondary}
+                        style={{ marginRight: 8 }}
+                    />
+                    <StatCardMolecule
+                        label="CGPA"
+                        value={(displayStats.avgMarks / 20).toFixed(1)} // Mock calc
+                        icon="school"
+                        color={theme.colors.primary}
+                        style={{ marginLeft: 8 }}
+                    />
+                </View>
 
-                {/* Grade Trends */}
-                <Text variant="titleLarge" style={styles.sectionTitle}>Grade Trends</Text>
-                <LineChart
-                    data={gradeTrendData}
-                    width={width - 40}
-                    height={220}
-                    chartConfig={{
-                        ...chartConfig,
-                        decimalPlaces: 0,
-                    }}
-                    bezier
-                    style={{
-                        marginVertical: 8,
-                        borderRadius: 16,
-                        paddingRight: 40 // fit right label
-                    }}
-                />
-
-                {/* Subject Breakdown with Badges */}
-                <Text variant="titleLarge" style={styles.sectionTitle}>Subject Analysis</Text>
+                {/* Subject Breakdown */}
+                <CText variant="titleLarge" style={styles.sectionTitle}>Subject Analysis</CText>
 
                 {displayStats.subjects?.map((subject, index) => (
-                    <Surface key={index} style={styles.subjectCard} elevation={0}>
+                    <Surface key={index} style={styles.subjectCard} elevation={1}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                            <Text variant="titleMedium" style={{ fontWeight: 'bold', flex: 1 }}>{subject.name}</Text>
+                            <CText variant="titleMedium" style={{ fontWeight: 'bold', flex: 1 }}>{subject.name}</CText>
                             <Surface style={[styles.gradeBadge, { backgroundColor: getBadgeColor(subject.badge) }]} elevation={0}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>{subject.badge}</Text>
+                                <CText style={{ color: 'white', fontWeight: 'bold', fontSize: 12 }}>{subject.badge}</CText>
                             </Surface>
                         </View>
 
                         <View style={styles.statRow}>
                             <View style={styles.statLabel}>
-                                <Text variant="bodySmall" style={{ color: '#6B7280' }}>Attendance</Text>
-                                <Text variant="bodySmall" style={{ fontWeight: 'bold', color: theme.colors.primary }}>{subject.attendance}%</Text>
+                                <CText variant="bodySmall" style={{ color: '#6B7280' }}>Attendance</CText>
+                                <CText variant="bodySmall" style={{ fontWeight: 'bold', color: theme.colors.primary }}>{subject.attendance}%</CText>
                             </View>
                             <ProgressBar
                                 progress={subject.attendance / 100}
@@ -162,10 +178,13 @@ export default function StatsScreen() {
                             />
                         </View>
 
+                        {/* Separator */}
+                        <View style={{ height: 12 }} />
+
                         <View style={styles.statRow}>
                             <View style={styles.statLabel}>
-                                <Text variant="bodySmall" style={{ color: '#6B7280' }}>Marks</Text>
-                                <Text variant="bodySmall" style={{ fontWeight: 'bold', color: theme.colors.secondary }}>{subject.marks}</Text>
+                                <CText variant="bodySmall" style={{ color: '#6B7280' }}>Marks</CText>
+                                <CText variant="bodySmall" style={{ fontWeight: 'bold', color: theme.colors.secondary }}>{subject.marks}</CText>
                             </View>
                             <ProgressBar
                                 progress={subject.marks / 100}
@@ -178,7 +197,7 @@ export default function StatsScreen() {
 
                 <View style={{ height: 40 }} />
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -196,58 +215,63 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        padding: 24,
-        backgroundColor: 'white',
+    headerGradient: {
+        borderBottomLeftRadius: 32,
+        borderBottomRightRadius: 32,
+        elevation: 8,
+        paddingBottom: 20,
+    },
+    headerContent: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+    },
+    headerTitle: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    chartContainer: {
+        alignItems: 'center',
+        marginTop: 10,
+        height: 140,
+        justifyContent: 'flex-end',
+        overflow: 'hidden',
+    },
+    chartOverlayText: {
+        position: 'absolute',
+        top: 20,
+        color: 'rgba(255,255,255,0.8)',
+        fontWeight: '600',
     },
     content: {
         padding: 20,
+        paddingTop: 30,
     },
-    mainCard: {
-        backgroundColor: 'white',
-        borderRadius: 24,
-        padding: 20,
-        marginBottom: 24,
-        alignItems: 'center',
-    },
-    statBadges: {
+    statsGrid: {
         flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-around',
-        marginTop: 20,
-        alignItems: 'center',
-    },
-    badgeItem: {
-        alignItems: 'center',
-    },
-    divider: {
-        width: 1,
-        height: 40,
+        marginBottom: 32,
+        marginTop: -50, // Pull up to overlap with header
     },
     sectionTitle: {
         fontWeight: 'bold',
         marginBottom: 16,
         color: '#111827',
-        marginTop: 8,
+        fontFamily: 'Inter_600SemiBold',
     },
     subjectCard: {
         backgroundColor: 'white',
         borderRadius: 16,
         padding: 20,
         marginBottom: 16,
-        borderWidth: 1,
-        borderColor: '#F3F4F6',
     },
     gradeBadge: {
         paddingHorizontal: 12,
         paddingVertical: 4,
-        borderRadius: 12,
+        borderRadius: 8,
     },
     statRow: {
-        marginBottom: 12,
+        marginBottom: 4,
     },
     statLabel: {
         flexDirection: 'row',
@@ -255,8 +279,8 @@ const styles = StyleSheet.create({
         marginBottom: 6,
     },
     progressBar: {
-        height: 8,
-        borderRadius: 4,
+        height: 6,
+        borderRadius: 3,
         backgroundColor: '#F3F4F6',
     },
 });

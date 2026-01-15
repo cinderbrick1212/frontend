@@ -4,7 +4,7 @@ import { Text, Surface, Button, FAB, Modal, Portal, TextInput, useTheme, Avatar,
 import { AuthContext } from '../../context/AuthContext';
 import client from '../../api/client';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { formatDistanceToNow } from 'date-fns';
 
 const { width } = Dimensions.get('window');
