@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useContext(AuthContext);
+    const { login, isLoading } = useContext(AuthContext);
     const theme = useTheme();
 
     return (
@@ -28,6 +28,7 @@ export default function LoginScreen({ navigation }) {
                         mode="outlined"
                         style={styles.input}
                         autoCapitalize="none"
+                        disabled={isLoading}
                     />
                     <TextInput
                         label="Password"
@@ -36,12 +37,15 @@ export default function LoginScreen({ navigation }) {
                         mode="outlined"
                         secureTextEntry
                         style={styles.input}
+                        disabled={isLoading}
                     />
                     <Button
                         mode="contained"
                         onPress={() => login(email, password)}
                         style={styles.button}
                         contentStyle={{ height: 50 }}
+                        loading={isLoading}
+                        disabled={isLoading}
                     >
                         Login
                     </Button>
