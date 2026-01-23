@@ -3,6 +3,9 @@ import { View, StyleSheet, FlatList, TouchableOpacity, Dimensions, Image } from 
 import { Text, Surface, Button, useTheme, Searchbar, Chip, IconButton } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+
+
 
 const { width } = Dimensions.get('window');
 
@@ -36,8 +39,9 @@ export default function ResourcesScreen({ navigation }) {
     const renderItem = ({ item }) => {
         if (isGridView) {
             return (
+                
                 <TouchableOpacity style={styles.gridItemContainer}>
-                    <Surface style={styles.gridItem} elevation={2}>
+                    <Surface style={[styles.gridItem, {}]} elevation={2}>
                         <View style={[styles.iconPlaceholder, { backgroundColor: item.color + '20' }]}>
                             <Icon name={getIcon(item.type)} size={32} color={item.color} />
                         </View>
@@ -83,12 +87,18 @@ export default function ResourcesScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+        <SafeAreaView style={[styles.container, { backgroundColor: '#000' }]}>
+            <LinearGradient
+                colors={['#00a640', '#00a055', '#009a64']} // Utilising V2 Theme Gradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.headerGradient}
+            >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                    <Text variant="headlineMedium" style={{ fontWeight: 'bold', color: theme.colors.primary }}>Library</Text>
+                    <Text variant="headlineSmall" style={{ fontWeight: 'bold', color: '#ffffff' }}><Icon name="book-open-variant" size={30} color="#ffffff" /> Resource Hub</Text>
                     <IconButton
                         icon={isGridView ? "view-list" : "view-grid"}
+                        size={18}
                         onPress={() => setIsGridView(!isGridView)}
                         mode="contained-tonal"
                     />
@@ -99,10 +109,10 @@ export default function ResourcesScreen({ navigation }) {
                     onChangeText={setSearchQuery}
                     value={searchQuery}
                     style={styles.searchBar}
-                    inputStyle={{ minHeight: 0 }} // Fix for searchbar height
+                    inputStyle={{ fontSize: 16, minHeight: 0 }} // Fix for searchbar height
                 />
 
-                <View style={{ height: 50, marginTop: 12 }}>
+                <View style={{ height: 30, marginTop: 12 }}>
                     <FlatList
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -122,7 +132,7 @@ export default function ResourcesScreen({ navigation }) {
                         contentContainerStyle={{ paddingRight: 20 }}
                     />
                 </View>
-            </View>
+            </LinearGradient>
 
             <FlatList
                 key={isGridView ? 'grid' : 'list'}
@@ -140,6 +150,12 @@ export default function ResourcesScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding:20,
+    },
+    headerGradient: {
+        padding:20,
+        borderRadius: 20,
+        marginBottom: 20,
     },
     header: {
         padding: 20,
@@ -149,14 +165,15 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: 'white',
         elevation: 2,
+        height: 40,
+        marginBottom: 10,
     },
     filterChip: {
         marginRight: 8,
         backgroundColor: 'white',
     },
     listContent: {
-        padding: 20,
-        paddingTop: 10,
+
     },
     listItem: {
         flexDirection: 'row',

@@ -35,6 +35,17 @@ function AppTabs() {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
+                tabBarStyle: {backgroundColor: '#09090b', height: 65, },
+
+                tabBarItemStyle: {
+                    padding:2, borderRadius: 10},
+
+                tabBarItemStyle: {
+                    margin: 6,              
+                    borderRadius: 10,       
+                    overflow: 'hidden',     
+                },                    
+
                 tabBarIcon: ({ color, size }) => {
                     let iconName;
 
@@ -46,7 +57,8 @@ function AppTabs() {
 
                     return <Icon name={iconName} size={size} color={color} />;
                 },
-                tabBarActiveTintColor: theme.colors.primary,
+                tabBarActiveTintColor: 'white',
+                tabBarActiveBackgroundColor: '#980ffa',
                 tabBarInactiveTintColor: 'gray',
             })}
         >
@@ -71,8 +83,8 @@ export default function AppNavigator() {
     }
 
     return (
-        <NavigationContainer>
-            {userToken ? <AppTabs /> : <AuthStack />}
-        </NavigationContainer>
+    <NavigationContainer>
+        <AppTabs />
+    </NavigationContainer>
     );
 }

@@ -37,13 +37,17 @@ export default function HomeScreen({ navigation }) {
     );
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <ScrollView
+            style={{ backgroundColor: '#000' }}
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+        >
             {/* Extended Gradient Header */}
             <LinearGradient
-                colors={gradients.focus} // Utilising V2 Theme Gradient
-                style={styles.headerGradient}
+                colors={['#9716FB', '#6A46FB', '#225CFB']} // Utilising V2 Theme Gradient
                 start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.headerGradient}
             >
                 <SafeAreaView edges={['top', 'left', 'right']}>
                     <View style={styles.headerContent}>
@@ -73,24 +77,27 @@ export default function HomeScreen({ navigation }) {
                     {/* Quick Stats in Header */}
                     <View style={styles.headerStats}>
                         <View style={styles.headerStatItem}>
-                            <CText variant="displayMedium" style={{ color: 'white', fontWeight: 'bold' }}>85%</CText>
-                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Attendance</CText>
+                            <CText variant="displaySmall" style={{ color: 'white', fontFamily: "sans-serif"}}>85%</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)',fontFamily: "sans-serif" }}>Attendance</CText>
                         </View>
                         <View style={styles.headerStatDivider} />
                         <View style={styles.headerStatItem}>
-                            <CText variant="displayMedium" style={{ color: '#FFD700', fontWeight: 'bold' }}>3.8</CText>
-                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>CGPA</CText>
+                            <CText variant="displaySmall" style={{ color: '#FFD700', fontFamily: "sans-serif" }}>3.8</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: "sans-serif" }}>CGPA</CText>
                         </View>
                         <View style={styles.headerStatDivider} />
                         <View style={styles.headerStatItem}>
-                            <CText variant="displayMedium" style={{ color: '#6EE7B7', fontWeight: 'bold' }}>12</CText>
-                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)' }}>Pending</CText>
+                            <CText variant="displaySmall" style={{ color: '#6EE7B7', fontFamily: "sans-serif" }}>12</CText>
+                            <CText variant="bodySmall" style={{ color: 'rgba(255,255,255,0.8)', fontFamily: "sans-serif" }}>Pending</CText>
                         </View>
                     </View>
                 </SafeAreaView>
             </LinearGradient>
 
-            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                style={{ backgroundColor: '#000' }}
+                showsVerticalScrollIndicator={false}
+            >
 
                 {/* AI Tutor / Mock Test Promo */}
                 <TouchableOpacity onPress={() => navigation.navigate('Quizzes')} activeOpacity={0.9}>
@@ -125,26 +132,30 @@ export default function HomeScreen({ navigation }) {
                 </TouchableOpacity>
 
                 {/* Quick Actions Grid */}
-                <CText variant="titleLarge" style={styles.sectionTitle}>Quick Access</CText>
-                <View style={styles.actionsGrid}>
-                    <ActionCard title="Resources" icon="book-open-variant" color="#3B82F6" onPress={() => navigation.navigate('Resources')} />
-                    <ActionCard title="Community" icon="account-group" color="#EC4899" onPress={() => navigation.navigate('Forums')} />
-                    <ActionCard title="Analytics" icon="chart-box" color="#8B5CF6" onPress={() => navigation.navigate('Stats')} />
-                    <ActionCard title="Schedule" icon="calendar-clock" color="#10B981" onPress={() => { }} />
+                <View style={styles.quickAccessSection}>
+                    <CText variant="titleLarge" style={styles.sectionTitle}>Quick Access</CText>
+                    <View style={styles.actionsGrid}>
+                        <ActionCard title="Resources" icon="book-open-variant" color="#3B82F6" onPress={() => navigation.navigate('Resources')} />
+                        <ActionCard title="Community" icon="account-group" color="#EC4899" onPress={() => navigation.navigate('Forums')} />
+                        <ActionCard title="Analytics" icon="chart-box" color="#8B5CF6" onPress={() => navigation.navigate('Stats')} />
+                        <ActionCard title="Schedule" icon="calendar-clock" color="#10B981" onPress={() => { }} />
+                    </View>
                 </View>
 
                 {/* Dynamic Feed */}
-                <View style={styles.feedHeader}>
-                    <CText variant="titleLarge" style={styles.sectionTitle}>Your Feed</CText>
-                    <TouchableOpacity><CText style={{ color: theme.colors.primary, fontWeight: '600' }}>See All</CText></TouchableOpacity>
-                </View>
+                <View style={styles.feedContainer}>
+                    <View style={styles.feedHeader}>
+                        <CText variant="titleLarge" style={styles.sectionTitle}>Your Feed</CText>
+                        <TouchableOpacity><CText style={{ color: theme.colors.primary, fontWeight: '600' }}>See All</CText></TouchableOpacity>
+                    </View>
 
-                {/* Implemented Feed Items */}
-                {FEED_ITEMS.map((item) => (
-                    <TouchableOpacity key={item.id} activeOpacity={0.7} onPress={() => { }}>
-                        {renderFeedItem({ item })}
-                    </TouchableOpacity>
-                ))}
+                    {/* Implemented Feed Items */}
+                    {FEED_ITEMS.map((item) => (
+                        <TouchableOpacity key={item.id} activeOpacity={0.7} onPress={() => { }}>
+                            {renderFeedItem({ item })}
+                        </TouchableOpacity>
+                    ))}
+                </View>
 
                 <View style={{ height: 80 }} />
             </ScrollView>
@@ -158,19 +169,18 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => { }}
                 elevation={4}
             />
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+
     },
     headerGradient: {
-        paddingBottom: 30,
-        borderBottomLeftRadius: 32,
-        borderBottomRightRadius: 32,
-        elevation: 8,
+        borderRadius:20,
+        marginBottom:16,
     },
     headerContent: {
         flexDirection: 'row',
@@ -198,6 +208,7 @@ const styles = StyleSheet.create({
     content: {
         paddingHorizontal: 20,
         paddingTop: 24,
+        backgroundColor: '#000',
     },
     promoCard: {
         borderRadius: 24,
@@ -216,17 +227,22 @@ const styles = StyleSheet.create({
         height: 140,
         opacity: 0.9,
     },
+    quickAccessSection: {
+        backgroundColor: '#18181b',
+        borderRadius: 20,
+    },
     sectionTitle: {
         fontWeight: 'bold',
-        marginBottom: 16,
-        color: '#1F2937',
-        fontFamily: 'Inter_600SemiBold',
+        paddingLeft: 20,
+        marginTop: 16,
+        color: 'white',
+        fontFamily: 'sans-serif',
     },
     actionsGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        padding: 20,
         justifyContent: 'space-between',
-        marginBottom: 24,
     },
     feedHeader: {
         flexDirection: 'row',
@@ -238,7 +254,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: 'white',
+        backgroundColor: '#111',
         borderRadius: 16,
         marginBottom: 12,
     },
