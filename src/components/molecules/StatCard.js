@@ -9,6 +9,7 @@ export const StatCard = ({
     value,
     icon = 'chart-bar',
     color = theme.colors.primary,
+    labelColor = theme.colors.onSurfaceVariant, // 
     style
 }) => {
     return (
@@ -22,7 +23,7 @@ export const StatCard = ({
 
             <View style={styles.content}>
                 <CText variant="headlineMedium" style={styles.value}>{value}</CText>
-                <CText variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+                <CText variant="bodyMedium" style={{ color: labelColor }}>
                     {label}
                 </CText>
             </View>
