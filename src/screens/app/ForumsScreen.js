@@ -6,6 +6,7 @@ import client from '../../api/client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import { formatDistanceToNow } from 'date-fns';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 
@@ -84,15 +85,22 @@ export default function ForumsScreen({ navigation }) {
     );
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: 'white' }]}>
+        <SafeAreaView style={[styles.container, { backgroundColor: '#000' }]}>
             {/* Header - WhatsApp Style */}
-            <View style={[styles.header, { backgroundColor: theme.colors.primary }]}>
-                <Text variant="headlineSmall" style={{ fontWeight: 'bold', color: 'white', flex: 1 }}>College Community</Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <IconButton icon="magnify" iconColor="white" onPress={() => { }} />
-                    <IconButton icon="dots-vertical" iconColor="white" onPress={() => { }} />
-                </View>
-            </View>
+            <LinearGradient
+                colors={['#9519fa', '#6e45fb', '#215bfb']} // Utilising V2 Theme Gradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.header}
+            > 
+                <View>        
+                    <Text variant="headlineSmall" style={{ fontWeight: 'bold', color: 'white', flex: 1 }}>College Community</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <IconButton icon="magnify" iconColor="white" onPress={() => { }} />
+                        <IconButton icon="dots-vertical" iconColor="white" onPress={() => { }} />
+                    </View>
+                </View>    
+            </LinearGradient>  
 
             {/* Tabs (Mock) */}
             <View style={[styles.tabs, { backgroundColor: theme.colors.primary }]}>
