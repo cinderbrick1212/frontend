@@ -88,35 +88,34 @@ export default function ForumsScreen({ navigation }) {
         <SafeAreaView style={[styles.container, { backgroundColor: '#000' }]}>
             {/* Header - WhatsApp Style */}
             <LinearGradient
-                colors={['#9519fa', '#6e45fb', '#215bfb']} // Utilising V2 Theme Gradient
+                colors={['#e4007a', '#bd2abb', '#9815f6']} // Utilising V2 Theme Gradient
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.header}
             > 
                 <View>        
-                    <Text variant="headlineSmall" style={{ fontWeight: 'bold', color: 'white', flex: 1 }}>College Community</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <IconButton icon="magnify" iconColor="white" onPress={() => { }} />
-                        <IconButton icon="dots-vertical" iconColor="white" onPress={() => { }} />
-                    </View>
+                    <Text variant="headlineSmall" style={{ fontWeight: 'bold', color: 'white', flex: 1}}>College Community</Text>
                 </View>    
-            </LinearGradient>  
+            
 
-            {/* Tabs (Mock) */}
-            <View style={[styles.tabs, { backgroundColor: theme.colors.primary }]}>
-                <View style={styles.tabItem}>
-                    <Icon name="account-group" size={24} color="rgba(255,255,255,0.6)" />
+                {/* Tabs (Mock) */}
+                <View style={[styles.tabs,]}>
+                    <View style={styles.tabItem}>
+                        <Icon name="account-group" size={24} color="rgba(255,255,255,0.6)" />
+                    </View>
+                    <View style={styles.tabItem}>
+                        <Text style={styles.tabText}>Chats</Text>
+                        <View style={styles.activeIndicator} />
+                        </View>
+                    <View style={styles.tabItem}>
+                        <Text style={styles.tabText}>Updates</Text>
+                        
+                    </View>
+                    <View style={styles.tabItem}>
+                        <Text style={styles.tabText}>Calls</Text>
+                    </View>
                 </View>
-                <View style={[styles.tabItem, styles.activeTab]}>
-                    <Text style={styles.tabText}>Chats</Text>
-                </View>
-                <View style={styles.tabItem}>
-                    <Text style={styles.tabText}>Updates</Text>
-                </View>
-                <View style={styles.tabItem}>
-                    <Text style={styles.tabText}>Calls</Text>
-                </View>
-            </View>
+            </LinearGradient>  
 
             <FlatList
                 data={posts}
@@ -174,32 +173,35 @@ export default function ForumsScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20,
     },
     header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        elevation: 0,
+        padding:20,
+        borderRadius: 20,
+        marginBottom: 20,        
     },
     tabs: {
         flexDirection: 'row',
-        paddingBottom: 0,
+        alignContent: 'center',
+        marginTop: 20,
     },
     tabItem: {
         flex: 1,
         alignItems: 'center',
-        paddingVertical: 12,
     },
-    activeTab: {
-        borderBottomWidth: 3,
-        borderBottomColor: 'white',
+    activeIndicator: {
+        width: 40,       // 👈 control underline length here
+        height: 3,
+        backgroundColor: 'white',
+        marginTop: 6,
+        borderRadius: 2,
     },
     tabText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 14,
         textTransform: 'uppercase',
+        justifyContent: 'space-around'
     },
     list: {
         paddingTop: 8,
