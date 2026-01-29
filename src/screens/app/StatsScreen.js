@@ -80,10 +80,10 @@ export default function StatsScreen({ navigation }) {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={[styles.container, { backgroundColor: '#000' }]}>
             {/* Header */}
             <LinearGradient
-                colors={gradients.focus}
+                colors={['#310e3e', '#370f34', '#3d0e2c']} 
                 style={styles.headerGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -104,30 +104,6 @@ export default function StatsScreen({ navigation }) {
                             onPress={() => { }}
                         />
                     </View>
-
-                    {/* Hero Chart inside Header */}
-                    <View style={styles.chartContainer}>
-                        <LineChart
-                            data={gradeTrendData}
-                            width={width}
-                            height={180}
-                            withDots={false}
-                            withInnerLines={false}
-                            withOuterLines={false}
-                            withVerticalLabels={false}
-                            withHorizontalLabels={false}
-                            chartConfig={{
-                                ...chartConfig,
-                                backgroundGradientFromOpacity: 0,
-                                backgroundGradientToOpacity: 0,
-                                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                labelColor: () => `rgba(255, 255, 255, 0.7)`,
-                            }}
-                            bezier
-                            style={{ paddingRight: 0, marginLeft: -20 }}
-                        />
-                        <CText variant="titleMedium" style={styles.chartOverlayText}>Cumulative Performance</CText>
-                    </View>
                 </SafeAreaView>
             </LinearGradient>
 
@@ -143,14 +119,16 @@ export default function StatsScreen({ navigation }) {
                         value={`${displayStats.attendance}%`}
                         icon="account-check"
                         color={theme.colors.secondary}
-                        style={{ marginRight: 8 }}
+                        labelColor="#E5E7EB"
+                        style={{ marginRight: 8, backgroundColor: '#18181b' }}
                     />
                     <StatCardMolecule
                         label="CGPA"
                         value={(displayStats.avgMarks / 20).toFixed(1)} // Mock calc
                         icon="school"
                         color={theme.colors.primary}
-                        style={{ marginLeft: 8 }}
+                        labelColor="#ffffff"
+                        style={{ marginLeft: 8, backgroundColor: '#18181b', }}
                     />
                 </View>
 
@@ -214,12 +192,11 @@ const getBadgeColor = (grade) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20,
     },
     headerGradient: {
-        borderBottomLeftRadius: 32,
-        borderBottomRightRadius: 32,
-        elevation: 8,
-        paddingBottom: 20,
+        borderRadius: 16,
+        marginBottom: 20,
     },
     headerContent: {
         flexDirection: 'row',
@@ -231,36 +208,22 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
-    chartContainer: {
-        alignItems: 'center',
-        marginTop: 10,
-        height: 140,
-        justifyContent: 'flex-end',
-        overflow: 'hidden',
-    },
-    chartOverlayText: {
-        position: 'absolute',
-        top: 20,
-        color: 'rgba(255,255,255,0.8)',
-        fontWeight: '600',
-    },
     content: {
-        padding: 20,
-        paddingTop: 30,
+        
     },
     statsGrid: {
         flexDirection: 'row',
         marginBottom: 32,
-        marginTop: -50, // Pull up to overlap with header
+
     },
     sectionTitle: {
         fontWeight: 'bold',
         marginBottom: 16,
-        color: '#111827',
+        color: 'white',
         fontFamily: 'Inter_600SemiBold',
     },
     subjectCard: {
-        backgroundColor: 'white',
+        backgroundColor: '#18181b',
         borderRadius: 16,
         padding: 20,
         marginBottom: 16,

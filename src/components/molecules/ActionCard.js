@@ -20,12 +20,11 @@ export const ActionCard = ({ title, icon, color, onPress }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: '23%',
+        width: '40%',
         minWidth: 80,
         marginBottom: 16,
     },
     card: {
-        padding: 12,
         borderRadius: 16,
         alignItems: 'center',
         backgroundColor: theme.colors.surface,
@@ -43,5 +42,7 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: '600',
         marginTop: 4,
+        fontFamily: 'sans-serif',
+        fontSize: 16,
     }
 });

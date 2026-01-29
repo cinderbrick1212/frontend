@@ -1,5 +1,6 @@
+import { StyleSheet } from 'react-native';
 import { Button, Text, ActivityIndicator, TouchableRipple } from 'react-native-paper';
-import LinearGradient from '../../LinearGradientShim'; // Use Shim for Web compatibility
+import LinearGradient from '../LinearGradientShim';
 import { theme, gradients } from '../../theme';
 
 /**
